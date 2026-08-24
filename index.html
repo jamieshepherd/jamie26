@@ -84,6 +84,16 @@
 
         <div class="thought-nodes" data-thought-nodes></div>
 
+        <nav class="mobile-timeline-nav" aria-label="Browse timeline signals">
+          <button type="button" data-mobile-timeline-step="older">← OLDER</button>
+          <div class="mobile-timeline-nav__readout" aria-live="polite">
+            <strong data-mobile-timeline-title>LATEST SIGNAL</strong>
+            <small><span data-mobile-timeline-kind>TRANSMISSION</span> · <time data-mobile-timeline-date></time></small>
+          </div>
+          <button type="button" data-mobile-timeline-step="newer">NEWER →</button>
+          <button class="mobile-timeline-nav__go" type="button" data-mobile-timeline-go>GO ↗</button>
+        </nav>
+
         <div class="orbit__legend" aria-hidden="true">
           <span><i></i> LONG-FORM OBJECT</span>
           <span class="legend-signal"><i></i> SHORT SIGNAL</span>

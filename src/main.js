@@ -116,6 +116,41 @@ let timelineItems = articles.map((article) => ({
   node: nodes.querySelector(`[data-article="${article.slug}"]`),
 }));
 
+const mobileTimelineTitle = document.querySelector('[data-mobile-timeline-title]');
+const mobileTimelineKind = document.querySelector('[data-mobile-timeline-kind]');
+const mobileTimelineDate = document.querySelector('[data-mobile-timeline-date]');
+const mobileTimelineOlder = document.querySelector('[data-mobile-timeline-step="older"]');
+const mobileTimelineNewer = document.querySelector('[data-mobile-timeline-step="newer"]');
+let mobileTimelineIndex = 0;
+let mobileTimelineItem = null;
+
+const orderedTimelineItems = () => [...timelineItems].sort((a, b) => b.time - a.time);
+const selectMobileTimelineItem = (index = mobileTimelineIndex) => {
+  const ordered = orderedTimelineItems();
+  timelineItems.forEach((item) => item.node.classList.remove('is-selected'));
+  if (!ordered.length) return;
+  mobileTimelineIndex = Math.max(0, Math.min(ordered.length - 1, index));
+  mobileTimelineItem = ordered[mobileTimelineIndex];
+  mobileTimelineItem.node.classList.add('is-selected');
+  const article = mobileTimelineItem.kind === 'article'
+    ? articles.find((entry) => entry.slug === mobileTimelineItem.id)
+    : null;
+  mobileTimelineTitle.textContent = article?.title || mobileTimelineItem.preview || 'UNTITLED SIGNAL';
+  mobileTimelineKind.textContent = mobileTimelineItem.kind === 'article' ? 'LONG' : 'SHORT';
+  mobileTimelineDate.textContent = formatDate(new Date(mobileTimelineItem.time).toISOString().slice(0, 10));
+  mobileTimelineOlder.disabled = mobileTimelineIndex >= ordered.length - 1;
+  mobileTimelineNewer.disabled = mobileTimelineIndex === 0;
+};
+
+mobileTimelineOlder.addEventListener('click', () => selectMobileTimelineItem(mobileTimelineIndex + 1));
+mobileTimelineNewer.addEventListener('click', () => selectMobileTimelineItem(mobileTimelineIndex - 1));
+document.querySelector('[data-mobile-timeline-go]').addEventListener('click', () => {
+  if (!mobileTimelineItem) return;
+  if (mobileTimelineItem.kind === 'article') openArticle(mobileTimelineItem.id);
+  else window.open(mobileTimelineItem.url, '_blank', 'noopener,noreferrer');
+});
+selectMobileTimelineItem(0);
+
 let indexFilter = 'long';
 const renderIndex = () => {
   const ordered = [...timelineItems]
@@ -217,6 +252,7 @@ const applyTimelineDom = () => {
     const point = worldToScreen(item);
     item.node.style.left = `${point.x}px`;
     item.node.style.top = `${point.y}px`;
+    item.node.classList.toggle('thought-node--copy-left', point.x > timelineLayout.width - 230);
     const outOfRange = point.x < -180 || point.x > timelineLayout.width + 180 || point.y < -100 || point.y > timelineLayout.height + 100;
     item.node.style.visibility = outOfRange ? 'hidden' : '';
   });
@@ -253,7 +289,7 @@ const resizeTimeline = () => {
     else timelinePath.lineTo(point.x, point.y);
   }
   positionTimelineItems();
-  if (!timelineCamera.initialized) {
+  if (!timelineCamera.initialized || compact) {
     timelineCamera.initialized = true;
     showOverview();
     timelineCamera.x = timelineCamera.targetX;
@@ -387,6 +423,7 @@ const zoomTimelineAt = (factor, x = timelineLayout.anchorX, y = timelineLayout.a
 };
 
 timeline.addEventListener('wheel', (event) => {
+  if (timelineLayout.compact) return;
   event.preventDefault();
   const bounds = timeline.getBoundingClientRect();
   zoomTimelineAt(Math.exp(-event.deltaY * .0012), event.clientX - bounds.left, event.clientY - bounds.top);
@@ -394,6 +431,7 @@ timeline.addEventListener('wheel', (event) => {
 
 let dragPoint = null;
 timeline.addEventListener('pointerdown', (event) => {
+  if (timelineLayout.compact) return;
   if (event.target.closest('button')) return;
   dragPoint = { x: event.clientX, y: event.clientY };
   timeline.classList.add('is-dragging');
@@ -497,6 +535,7 @@ document.querySelectorAll('[data-close-panel]').forEach((button) => button.addEv
 
 document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => {
   const indexMode = button.dataset.mode === 'index';
+  if (indexMode && window.innerWidth < 900) window.scrollTo({ top: 0, behavior: 'auto' });
   document.body.classList.toggle('is-index', indexMode);
   document.querySelectorAll('[data-mode]').forEach((item) => item.classList.toggle('is-active', item === button));
 }));
@@ -535,6 +574,7 @@ const addTimelineSignals = (records) => {
   document.querySelector('[data-object-count]').textContent = String(timelineItems.length).padStart(2, '0');
   renderIndex();
   positionTimelineItems();
+  selectMobileTimelineItem(0);
 };
 
 const loadSignals = async () => {
