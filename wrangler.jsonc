@@ -14,7 +14,8 @@
     {
       "binding": "DB",
       "database_name": "jamie26-signals",
-      "migrations_dir": "migrations"
+      "migrations_dir": "migrations",
+      "database_id": "24062205-c3fd-4735-8fec-b36bd983cfdd"
     }
   ],
   "triggers": {

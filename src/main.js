@@ -223,11 +223,9 @@ const applyTimelineDom = () => {
 };
 
 const showOverview = () => {
-  const { width, height, compact } = timelineLayout;
-  const fit = Math.min(width * (compact ? .86 : .69), height * .9) / (worldRadius * 2);
   timelineCamera.targetX = 0;
   timelineCamera.targetY = 0;
-  timelineCamera.targetZ = Math.max(.3, fit);
+  timelineCamera.targetZ = timelineLayout.minimumZoom;
 };
 
 const resizeTimeline = () => {
@@ -244,7 +242,8 @@ const resizeTimeline = () => {
   const now = Date.now();
   const anchorX = width * (compact ? .5 : .66);
   const anchorY = height * (compact ? .49 : .52);
-  timelineLayout = { width, height, dpr, compact, anchorX, anchorY, now };
+  const minimumZoom = Math.max(.3, Math.min(width * (compact ? .86 : .69), height * .9) / (worldRadius * 2));
+  timelineLayout = { width, height, dpr, compact, anchorX, anchorY, now, minimumZoom };
   timelinePath = new Path2D();
   const steps = Math.ceil(timelineYears(now) * 90);
   for (let index = 0; index <= steps; index += 1) {
@@ -260,6 +259,9 @@ const resizeTimeline = () => {
     timelineCamera.x = timelineCamera.targetX;
     timelineCamera.y = timelineCamera.targetY;
     timelineCamera.z = timelineCamera.targetZ;
+  } else {
+    timelineCamera.targetZ = Math.max(timelineCamera.targetZ, minimumZoom);
+    timelineCamera.z = Math.max(timelineCamera.z, minimumZoom);
   }
   applyTimelineDom();
 };
@@ -372,8 +374,13 @@ requestAnimationFrame(drawTimeline);
 window.addEventListener('resize', resizeTimeline, { passive: true });
 
 const zoomTimelineAt = (factor, x = timelineLayout.anchorX, y = timelineLayout.anchorY) => {
-  const before = screenToWorld(x, y);
-  const nextZoom = Math.max(.28, Math.min(2.8, timelineCamera.targetZ * factor));
+  const currentZoom = timelineCamera.targetZ;
+  const nextZoom = Math.max(timelineLayout.minimumZoom, Math.min(2.8, currentZoom * factor));
+  if (Math.abs(nextZoom - currentZoom) < .0001) return;
+  const before = {
+    x: timelineCamera.targetX + (x - timelineLayout.anchorX) / currentZoom,
+    y: timelineCamera.targetY + (y - timelineLayout.anchorY) / currentZoom,
+  };
   timelineCamera.targetX = before.x - (x - timelineLayout.anchorX) / nextZoom;
   timelineCamera.targetY = before.y - (y - timelineLayout.anchorY) / nextZoom;
   timelineCamera.targetZ = nextZoom;
