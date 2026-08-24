@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en" class="preload">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090a08" />
+    <meta
+      name="description"
+      content="Jamie Shepherd — software engineer, game-maker, and collector of unfinished thoughts."
+    />
+    <title>JAMIE.SH / Thoughtspace</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#thoughtspace">Skip to thoughtspace</a>
+
+    <div class="boot" data-boot aria-hidden="true">
+      <div class="boot__glyph">J<span>/</span>S</div>
+      <div class="boot__copy">
+        <span>CALIBRATING THOUGHTSPACE</span>
+        <span class="boot__line"></span>
+        <span data-boot-percent>000</span>
+      </div>
+    </div>
+
+    <canvas id="field" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
+
+    <header class="masthead">
+      <div class="masthead__identity">
+        <button class="wordmark magnetic" data-home aria-label="Return to the homepage">
+          <span>JAMIE</span><span class="wordmark__slash">/</span><span>SH</span>
+        </button>
+        <span class="masthead__status"><i></i> OPEN TO STRANGE IDEAS</span>
+      </div>
+      <div class="coordinates" aria-label="Current location and local time">
+        <span>SFO — CA</span>
+        <time data-clock>--:--:--</time>
+      </div>
+      <nav class="masthead__links" aria-label="Social links">
+        <a href="mailto:me@jamie.sh">EMAIL</a>
+        <a href="https://x.com/jamiesheep" rel="me">X</a>
+        <a href="https://bsky.app/profile/jamie.sh" rel="me">BLUESKY</a>
+        <a href="https://www.linkedin.com/in/jamieshepherd/" rel="me">LINKEDIN</a>
+      </nav>
+    </header>
+
+    <main id="thoughtspace">
+      <section class="identity-rail" aria-labelledby="intro-title">
+        <p class="eyebrow">HUMAN / SOFTWARE / GAMES</p>
+        <h1 id="intro-title">
+          I make<br />
+          <span class="outline">things</span><br />
+          that make<br />
+          me curious.
+        </h1>
+        <p class="lede">
+          Jamie Shepherd is a software engineer from Plymouth, now transmitting from San Francisco.
+          Currently building worlds, tools, and small internet experiments.
+        </p>
+        <button class="text-link magnetic" data-open-identity>
+          ENTER THE PERSON <span>→</span>
+        </button>
+      </section>
+
+      <section class="orbit" aria-labelledby="orbit-title" data-orbit>
+        <canvas class="timeline-canvas" data-timeline-canvas aria-hidden="true"></canvas>
+
+        <div class="orbit__heading">
+          <p class="eyebrow">LIFE / OUTPUT / TIME</p>
+          <h2 id="orbit-title">ONE CONTINUOUS<br />TRANSMISSION</h2>
+        </div>
+
+        <button class="timeline-origin magnetic" data-open-identity aria-label="Open Jamie's profile">
+          <i></i>
+          <span><b>1990</b>ORIGIN</span>
+        </button>
+
+        <div class="timeline-now" aria-label="Current point in the timeline">
+          <i></i>
+          <span><b>NOW</b>LATEST</span>
+        </div>
+
+        <div class="thought-nodes" data-thought-nodes></div>
+
+        <div class="orbit__legend" aria-hidden="true">
+          <span><i></i> LONG-FORM OBJECT</span>
+          <span class="legend-signal"><i></i> SHORT SIGNAL</span>
+          <button class="magnetic" data-random-article>RANDOM ACCESS ↗</button>
+        </div>
+
+        <p class="orbit__instruction">DRAG TO PAN · SCROLL TO ZOOM</p>
+      </section>
+
+      <aside class="index-rail" aria-label="Thought navigation controls">
+        <div class="mode-switch" role="group" aria-label="View mode">
+          <button class="is-active" data-mode="orbit">ORBIT</button>
+          <button data-mode="index">INDEX</button>
+        </div>
+        <div class="object-count"><b data-object-count>00</b><span>OBJECTS<br />RECOVERED</span></div>
+      </aside>
+
+      <section class="archive-index" data-archive-index aria-label="All essays and short signals">
+        <div class="archive-index__head">
+          <span>SIGNAL INDEX</span>
+          <div class="archive-index__filters" role="group" aria-label="Filter signal index">
+            <button class="is-active" data-index-filter="long" aria-pressed="true">LONG</button>
+            <button data-index-filter="short" aria-pressed="false">SHORT</button>
+          </div>
+          <span data-index-count>00 LONG</span>
+        </div>
+        <div data-index-list></div>
+      </section>
+    </main>
+
+    <div class="panel panel--identity" data-identity-panel aria-hidden="true">
+      <button class="wordmark panel__home magnetic" data-close-panel aria-label="Return to the homepage">
+        <span>JAMIE</span><span class="wordmark__slash">/</span><span>SH</span>
+      </button>
+      <button class="panel__close magnetic" data-close-panel aria-label="Close profile">CLOSE ×</button>
+      <div class="panel__body">
+        <p class="eyebrow">IDENTITY / CURRENT STATE</p>
+        <h2>Jamie<br />Shepherd<span>.</span></h2>
+        <p class="panel__manifesto">
+          Software engineer. Game-maker. Compulsive prototype-builder. Interested in digital worlds,
+          procedural systems, and making complicated things feel simple.
+        </p>
+        <div class="now-grid">
+          <div>
+            <span>ORIGIN</span>
+            <strong>PLYMOUTH, UK</strong>
+          </div>
+          <div>
+            <span>TRANSMITTING FROM</span>
+            <strong>SAN FRANCISCO, CA</strong>
+          </div>
+          <div>
+            <span>CURRENTLY</span>
+            <strong>BUILDING A GAME</strong>
+          </div>
+          <div>
+            <span>PERPETUALLY</span>
+            <strong>EXPERIMENTING</strong>
+          </div>
+        </div>
+        <div class="panel__links">
+          <a href="mailto:me@jamie.sh">START A CONVERSATION ↗</a>
+          <a href="https://x.com/jamiesheep">@JAMIESHEEP ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <article class="reader" data-reader aria-hidden="true">
+      <div class="reader__chrome">
+        <button class="reader__close magnetic" data-close-reader>← RETURN TO FIELD</button>
+        <div><span>LONG-FORM OBJECT</span><b data-reader-progress>000%</b></div>
+      </div>
+      <div class="reader__progress"><i data-reader-progress-bar></i></div>
+      <div class="reader__wrap">
+        <header class="reader__header">
+          <div class="reader__meta">
+            <span data-reader-index>OBJECT 00</span>
+            <time data-reader-date></time>
+            <span data-reader-location></span>
+          </div>
+          <h1 data-reader-title></h1>
+          <p data-reader-deck></p>
+          <span class="reader__scroll">SCROLL TO DESCEND ↓</span>
+        </header>
+        <div class="reader__body" data-reader-body></div>
+        <footer class="reader__footer">
+          <span>END OF OBJECT</span>
+          <button class="magnetic" data-next-article>NEXT SIGNAL →</button>
+        </footer>
+      </div>
+    </article>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
