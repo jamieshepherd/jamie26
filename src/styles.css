@@ -697,14 +697,14 @@ body.is-index .archive-index { opacity: 1; pointer-events: auto; transform: none
 @media (max-width: 900px) {
   .masthead { grid-template-columns: 1fr 1fr; height: 68px; padding: 0 1rem; background: rgba(9,10,8,.97); backdrop-filter: blur(12px); }
   .coordinates { display: none; }
-  #thoughtspace { min-height: 1250px; }
+  #thoughtspace { min-height: 1120px; }
   body.is-index { overflow: hidden; }
   body.is-index #thoughtspace { min-height: 100svh; }
   .identity-rail { top: 120px; left: 1.2rem; width: calc(100% - 4rem); }
   body.is-index .identity-rail { visibility: hidden; opacity: 0; pointer-events: none; }
   .identity-rail h1 { font-size: clamp(3.3rem, 15vw, 6.7rem); }
   .lede { max-width: 520px; }
-  .orbit { top: 650px; left: 0; width: 100%; height: 600px; cursor: default; touch-action: auto; }
+  .orbit { top: 520px; left: 0; width: 100%; height: 600px; cursor: default; touch-action: auto; }
   .orbit__heading { display: none; }
   .orbit__instruction { display: none; }
   .orbit__legend { display: none; }
@@ -717,7 +717,6 @@ body.is-index .archive-index { opacity: 1; pointer-events: auto; transform: none
     transform: scale(1.35);
   }
   .thought-node.is-selected .thought-node__copy { opacity: 1; transform: translate(0, -50%); }
-  .thought-node.is-selected .thought-node__copy strong { display: none; }
   .mobile-timeline-nav {
     position: absolute;
     z-index: 12;
@@ -767,7 +766,8 @@ body.is-index .archive-index { opacity: 1; pointer-events: auto; transform: none
     color: var(--ink) !important;
     background: var(--acid) !important;
   }
-  .index-rail { top: 88px; right: 1rem; bottom: 1rem; }
+  .index-rail { top: 88px; right: 1rem; bottom: 1rem; pointer-events: none; }
+  .index-rail .mode-switch { pointer-events: auto; }
   .vertical-copy { display: none; }
   .object-count { display: none; }
   .masthead__links { gap: .8rem; }
@@ -788,7 +788,7 @@ body.is-index .archive-index { opacity: 1; pointer-events: auto; transform: none
 @media (max-width: 580px) {
   .identity-rail { width: calc(100% - 2.4rem); }
   .identity-rail h1 { font-size: clamp(3.3rem, 18vw, 5.8rem); }
-  .orbit { top: 650px; width: 100%; height: 600px; }
+  .orbit { top: 520px; width: 100%; height: 600px; }
   .thought-node__copy strong { font-size: .55rem; }
   .masthead__status { display: none; }
   .masthead__links { gap: .55rem; font-size: .42rem; }

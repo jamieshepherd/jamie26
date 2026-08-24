@@ -277,7 +277,7 @@ const resizeTimeline = () => {
 
   const now = Date.now();
   const anchorX = width * (compact ? .5 : .66);
-  const anchorY = height * (compact ? .49 : .52);
+  const anchorY = height * (compact ? .42 : .52);
   const minimumZoom = Math.max(.3, Math.min(width * (compact ? .86 : .69), height * .9) / (worldRadius * 2));
   timelineLayout = { width, height, dpr, compact, anchorX, anchorY, now, minimumZoom };
   timelinePath = new Path2D();
