@@ -59,9 +59,15 @@
           Jamie Shepherd is a software engineer from Plymouth, now transmitting from San Francisco.
           Currently building worlds, tools, and small internet experiments.
         </p>
-        <button class="text-link magnetic" data-open-identity>
-          ENTER THE PERSON <span>→</span>
-        </button>
+        <div class="identity-actions">
+          <button class="text-link magnetic" data-open-identity>
+            MORE ABOUT ME <span>→</span>
+          </button>
+          <div class="active-missions">
+            <span class="active-missions__label"><i></i> ACTIVE MISSIONS</span>
+            <button class="mission-beacon magnetic" data-open-missions><span>BLOCKHAMMER</span><span>↗</span></button>
+          </div>
+        </div>
       </section>
 
       <section class="orbit" aria-labelledby="orbit-title" data-orbit>
@@ -105,8 +111,9 @@
 
       <aside class="index-rail" aria-label="Thought navigation controls">
         <div class="mode-switch" role="group" aria-label="View mode">
-          <button class="is-active" data-mode="orbit">ORBIT</button>
-          <button data-mode="index">INDEX</button>
+          <button class="is-active" data-mode="orbit" aria-pressed="true">ORBIT</button>
+          <button data-mode="index" aria-pressed="false">INDEX</button>
+          <button data-mode="missions" aria-pressed="false">MISSIONS</button>
         </div>
         <div class="object-count"><b data-object-count>00</b><span>OBJECTS<br />RECOVERED</span></div>
       </aside>
@@ -121,6 +128,53 @@
           <span data-index-count>00 LONG</span>
         </div>
         <div data-index-list></div>
+      </section>
+
+      <section class="missions-view" data-missions-view aria-labelledby="missions-title">
+        <header class="missions-view__intro">
+          <p class="eyebrow">ACTIVE WORK / CURRENT VECTOR</p>
+          <h2 id="missions-title">MISSIONS<span>.</span></h2>
+          <p>Software and games I’m actively working on. Some are available now; others are still in development.</p>
+          <div class="missions-view__telemetry" aria-label="Mission status">
+            <span><b>01</b> ACTIVE</span>
+            <span><b>02</b> OPEN CHANNELS</span>
+          </div>
+        </header>
+
+        <div class="mission-deck">
+          <a class="mission-card mission-card--active" href="https://blockhammer.app" target="_blank" rel="noopener noreferrer">
+            <div class="mission-card__topline">
+              <span>MISSION 01 / PUBLIC</span>
+              <span class="mission-card__live"><i></i> OUT NOW</span>
+            </div>
+            <div class="mission-card__field" aria-hidden="true">
+              <span class="mission-card__coordinate">54M / VOXELS</span>
+              <span class="mission-card__monogram">B/H</span>
+              <i class="mission-card__ring mission-card__ring--one"></i>
+              <i class="mission-card__ring mission-card__ring--two"></i>
+              <i class="mission-card__sweep"></i>
+            </div>
+            <div class="mission-card__copy">
+              <span>FREE / NATIVE / EARLY ACCESS</span>
+              <h3>BLOCKHAMMER</h3>
+              <p>A free cubic voxel editor for anything from a single prop to a scene of a hundred million blocks.</p>
+              <strong>ENTER BLOCKHAMMER.APP ↗</strong>
+            </div>
+          </a>
+
+          <div class="mission-slots" aria-label="Future mission slots">
+            <div class="mission-slot">
+              <span>MISSION 02</span>
+              <strong>AWAITING TRANSMISSION</strong>
+              <i>GAME / IN DEVELOPMENT</i>
+            </div>
+            <div class="mission-slot">
+              <span>MISSION 03</span>
+              <strong>AWAITING TRANSMISSION</strong>
+              <i>GAME / IN DEVELOPMENT</i>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
 

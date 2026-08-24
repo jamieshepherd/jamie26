@@ -277,7 +277,7 @@ const resizeTimeline = () => {
 
   const now = Date.now();
   const anchorX = width * (compact ? .5 : .66);
-  const anchorY = height * (compact ? .42 : .52);
+  const anchorY = height * (compact ? .45 : .52);
   const minimumZoom = Math.max(.3, Math.min(width * (compact ? .86 : .69), height * .9) / (worldRadius * 2));
   timelineLayout = { width, height, dpr, compact, anchorX, anchorY, now, minimumZoom };
   timelinePath = new Path2D();
@@ -520,11 +520,23 @@ const openPanel = (panel) => {
   setLock();
 };
 document.querySelectorAll('[data-open-identity]').forEach((button) => button.addEventListener('click', () => openPanel(identityPanel)));
+const setViewMode = (mode) => {
+  const indexMode = mode === 'index';
+  const missionsMode = mode === 'missions';
+  if ((indexMode || missionsMode) && window.innerWidth < 900) window.scrollTo({ top: 0, behavior: 'auto' });
+  document.body.classList.toggle('is-index', indexMode);
+  document.body.classList.toggle('is-missions', missionsMode);
+  document.querySelectorAll('[data-mode]').forEach((item) => {
+    const active = item.dataset.mode === mode;
+    item.classList.toggle('is-active', active);
+    item.setAttribute('aria-pressed', String(active));
+  });
+};
+document.querySelectorAll('[data-open-missions]').forEach((button) => button.addEventListener('click', () => setViewMode('missions')));
 document.querySelectorAll('[data-home]').forEach((button) => button.addEventListener('click', () => {
   document.querySelectorAll('.panel').forEach((panel) => panel.setAttribute('aria-hidden', 'true'));
   reader.setAttribute('aria-hidden', 'true');
-  document.body.classList.remove('is-index');
-  document.querySelectorAll('[data-mode]').forEach((item) => item.classList.toggle('is-active', item.dataset.mode === 'orbit'));
+  setViewMode('orbit');
   setLock();
   if (location.hash) history.pushState({}, '', location.pathname);
 }));
@@ -533,12 +545,7 @@ document.querySelectorAll('[data-close-panel]').forEach((button) => button.addEv
   setLock();
 }));
 
-document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => {
-  const indexMode = button.dataset.mode === 'index';
-  if (indexMode && window.innerWidth < 900) window.scrollTo({ top: 0, behavior: 'auto' });
-  document.body.classList.toggle('is-index', indexMode);
-  document.querySelectorAll('[data-mode]').forEach((item) => item.classList.toggle('is-active', item === button));
-}));
+document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => setViewMode(button.dataset.mode)));
 
 const tickClock = () => {
   document.querySelector('[data-clock]').textContent = new Intl.DateTimeFormat('en-US', {
