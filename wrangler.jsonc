@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "jamie26",
+  "main": "./worker/index.js",
+  "compatibility_date": "2026-08-23",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "jamie26-signals",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "triggers": {
+    "crons": ["17 * * * *"]
+  },
+  "vars": {
+    "BLUESKY_ACTOR": "jamie.sh",
+    "X_HANDLE": "jamiesheep"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

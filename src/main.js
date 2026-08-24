@@ -502,26 +502,27 @@ const tickClock = () => {
 tickClock();
 setInterval(tickClock, 1000);
 
-const addTimelineSignals = (feedItems) => {
-  const signals = feedItems.slice(0, 18).map((item, index) => {
-    const post = item.post;
-    const rkey = post.uri.split('/').at(-1);
-    const url = `https://bsky.app/profile/${post.author.handle}/post/${rkey}`;
-    const time = Date.parse(post.record.createdAt || post.indexedAt);
+const addTimelineSignals = (records) => {
+  const signals = records.flatMap((record, index) => {
+    const source = record.source === 'x' ? 'X' : 'BSKY';
+    const sourceId = String(record.sourceId || record.id || index);
+    const url = record.url;
+    const time = Date.parse(record.createdAt);
+    if (!Number.isFinite(time) || !record.text || !url) return [];
     const node = document.createElement('button');
     node.className = 'thought-node thought-node--signal';
     node.dataset.signalUrl = url;
-    node.title = post.record.text;
-    const preview = post.record.text.replace(/\s+/g, ' ').trim();
+    node.title = record.text;
+    const preview = record.text.replace(/\s+/g, ' ').trim();
     node.innerHTML = `
       <span class="thought-node__dot"></span>
       <span class="thought-node__copy">
-        <small>SHORT SIGNAL / ${formatDate(new Date(time).toISOString().slice(0, 10))}</small>
+        <small>SHORT SIGNAL / ${source} / ${formatDate(new Date(time).toISOString().slice(0, 10))}</small>
         <strong>${escapeHtml(preview.slice(0, 92))}${preview.length > 92 ? '…' : ''}</strong>
       </span>`;
     nodes.append(node);
-    return { kind: 'signal', id: `signal-${index}-${rkey}`, time, node, url, preview };
-  }).filter((signal) => Number.isFinite(signal.time));
+    return [{ kind: 'signal', id: `signal-${record.source}-${sourceId}`, time, node, url, preview }];
+  });
 
   timelineItems = [...timelineItems.filter((item) => item.kind !== 'signal'), ...signals];
   document.querySelector('[data-object-count]').textContent = String(timelineItems.length).padStart(2, '0');
@@ -531,14 +532,36 @@ const addTimelineSignals = (feedItems) => {
 
 const loadSignals = async () => {
   try {
+    const response = await fetch('/api/signals?limit=1000');
+    if (!response.ok) throw new Error(`Signal API returned ${response.status}`);
+    const data = await response.json();
+    if (!data.signals?.length) throw new Error('Signal archive is empty');
+    addTimelineSignals(data.signals);
+    return;
+  } catch {
+    // Local Vite development and fresh deployments fall back to Bluesky directly.
+  }
+
+  try {
     const response = await fetch('https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=jamie.sh&limit=25&filter=posts_no_replies');
     if (!response.ok) throw new Error(`Feed returned ${response.status}`);
     const data = await response.json();
-    const posts = data.feed.filter((item) => item.post?.record?.text && !item.reason);
-    if (!posts.length) throw new Error('No transmissions found');
-    addTimelineSignals(posts);
-  } catch (error) {
-    // The long-form timeline remains fully usable when the public feed is unavailable.
+    const records = data.feed.flatMap((item) => {
+      const post = item.post;
+      if (!post?.record?.text || item.reason || post.record.reply) return [];
+      const sourceId = post.uri.split('/').at(-1);
+      return [{
+        source: 'bluesky',
+        sourceId,
+        createdAt: post.record.createdAt || post.indexedAt,
+        text: post.record.text,
+        url: `https://bsky.app/profile/${post.author.handle}/post/${sourceId}`,
+      }];
+    });
+    if (!records.length) throw new Error('No transmissions found');
+    addTimelineSignals(records);
+  } catch {
+    // The long-form timeline remains fully usable when every feed is unavailable.
   }
 };
 loadSignals();

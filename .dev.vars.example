@@ -1,0 +1,6 @@
+# Required only for the protected sync and archive-import endpoints.
+ADMIN_TOKEN=replace-with-a-long-random-value
+
+# Optional. Bluesky works without credentials. Add these to sync new X posts.
+X_BEARER_TOKEN=
+X_USER_ID=
